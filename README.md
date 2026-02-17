@@ -13,6 +13,21 @@
 </div>
 
 
+### REST API
+
+This application includes a REST API accessible at `http://localhost:8000/api/v1/`
+
+**Available endpoints:**
+- `/api/v1/users` - User management
+- `/api/v1/products` - Product management with filtering
+- `/api/v1/categories` - Category management
+- `/api/v1/brands` - Brand management
+- `/api/v1/orders` - Order management
+
+All endpoints support standard CRUD operations (GET, POST, PUT, DELETE).
+
+For detailed API documentation and usage examples, see [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
+
 ### Installation
 
 Requirements: MySQL, PHP 8.1, Node.js and composer.
