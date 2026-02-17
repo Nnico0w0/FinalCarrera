@@ -10,6 +10,7 @@ This guide will help you run the FinalCarrera e-commerce application using Docke
 - Docker Desktop installed on your system
 - Docker Compose (comes with Docker Desktop)
 - At least 4GB of RAM available for Docker
+- Make (optional, for using Makefile commands)
 
 ## Quick Start
 
@@ -24,13 +25,16 @@ cd FinalCarrera
 cp .env.example .env
 ```
 
-### 3. Generate application key (optional - will be done automatically)
-The application key will be generated automatically when the container starts, but you can also generate it manually:
+### 3. Start all containers
+
+#### Using Make (Recommended)
 ```bash
-docker-compose run --rm backend php artisan key:generate
+make init
 ```
 
-### 4. Start all containers
+This will build, start, and seed the database automatically.
+
+#### Using Docker Compose
 ```bash
 docker-compose up -d
 ```
@@ -42,11 +46,43 @@ This command will:
 - Start the Vite development server
 - Run database migrations automatically
 
+### 4. Seed the database (if not using `make init`)
+```bash
+docker-compose exec backend php artisan db:seed --class=AdminSeeder
+```
+
 ### 5. Access the application
 
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8000
 - **Admin Panel**: http://localhost:8000/admin/login
+
+## Using Make Commands
+
+If you have `make` installed, you can use these convenient commands:
+
+```bash
+make help              # Show all available commands
+make up                # Start all containers
+make up-dev            # Start in development mode with hot-reload
+make down              # Stop all containers
+make restart           # Restart all containers
+make build             # Build/rebuild containers
+make logs              # Show logs from all containers
+make logs-backend      # Show backend logs
+make logs-frontend     # Show frontend logs
+make clean             # Stop and remove all volumes
+make migrate           # Run database migrations
+make seed              # Seed the database
+make seed-admin        # Seed admin user
+make fresh             # Fresh migrations with seed
+make shell-backend     # Open shell in backend container
+make shell-frontend    # Open shell in frontend container
+make shell-db          # Open PostgreSQL shell
+make cache-clear       # Clear Laravel cache
+make ps                # Show running containers
+make init              # Complete initial setup
+```
 
 ## Container Management
 
