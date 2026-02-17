@@ -4,7 +4,7 @@ services:
   # PostgreSQL Database
   db:
     image: postgres:15-alpine
-    container_name: finalcarrera_db
+    container_name: finalcarrera_db_dev
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_DATABASE:-finalcarrera}
@@ -22,12 +22,12 @@ services:
       timeout: 5s
       retries: 5
 
-  # Laravel Backend
+  # Laravel Backend with hot-reload
   backend:
     build:
       context: .
       dockerfile: Dockerfile.backend
-    container_name: finalcarrera_backend
+    container_name: finalcarrera_backend_dev
     restart: unless-stopped
     working_dir: /var/www
     environment:
@@ -37,9 +37,9 @@ services:
       - DB_DATABASE=${DB_DATABASE:-finalcarrera}
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-secret}
-      - APP_ENV=${APP_ENV:-production}
-      - APP_DEBUG=${APP_DEBUG:-false}
-      - APP_URL=${APP_URL:-http://localhost}
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8000
     volumes:
       - ./:/var/www
       - /var/www/vendor
@@ -52,17 +52,17 @@ services:
     networks:
       - finalcarrera_network
 
-  # Vue.js Frontend (Vite Dev Server)
+  # Vue.js Frontend with Vite hot-reload
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    container_name: finalcarrera_frontend
+    container_name: finalcarrera_frontend_dev
     restart: unless-stopped
     working_dir: /app
     environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - VITE_APP_URL=${APP_URL:-http://localhost:8000}
+      - NODE_ENV=development
+      - VITE_APP_URL=http://localhost:8000
     volumes:
       - ./:/app
       - /app/node_modules
