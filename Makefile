@@ -99,7 +99,7 @@ shell-frontend: ## Open shell in frontend container
 	docker-compose exec frontend sh
 
 shell-db: ## Open PostgreSQL shell
-	docker-compose exec db psql -U postgres -d finalcarrera
+	docker-compose exec db psql -U $${DB_USERNAME:-postgres} -d $${DB_DATABASE:-finalcarrera}
 
 cache-clear: ## Clear Laravel cache
 	@echo '${BLUE}Clearing cache...${RESET}'
