@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -18,11 +18,13 @@ php artisan cache:clear
 echo "Running migrations..."
 php artisan migrate --force
 
-# Cache configuration for better performance
-echo "Caching configuration..."
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# Cache configuration for better performance (only in production)
+if [ "$APP_ENV" = "production" ]; then
+  echo "Caching configuration for production..."
+  php artisan config:cache
+  php artisan route:cache
+  php artisan view:cache
+fi
 
 # Start the application
 echo "Starting Laravel server..."

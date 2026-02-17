@@ -24,7 +24,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile.backend
+      dockerfile: Dockerfile.backend.prod
       args:
         - APP_ENV=production
     container_name: finalcarrera_backend_prod

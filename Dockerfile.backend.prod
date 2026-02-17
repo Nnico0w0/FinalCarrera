@@ -12,8 +12,6 @@ RUN apk add --no-cache \
     oniguruma-dev \
     icu-dev \
     libzip-dev \
-    nodejs \
-    npm \
     bash
 
 # Install PHP extensions
@@ -38,8 +36,8 @@ WORKDIR /var/www
 # Copy composer files first for better layer caching
 COPY composer.json composer.lock ./
 
-# Install all dependencies (including dev for development)
-RUN composer install --optimize-autoloader --no-interaction --no-scripts
+# Install production dependencies only
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copy application files
 COPY . .
