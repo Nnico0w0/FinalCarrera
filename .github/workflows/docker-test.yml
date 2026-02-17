@@ -1,0 +1,89 @@
+name: Docker Build Test
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'Dockerfile.*'
+      - 'docker-compose*.yml'
+      - '.dockerignore'
+      - 'docker-entrypoint.sh'
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'Dockerfile.*'
+      - 'docker-compose*.yml'
+      - '.dockerignore'
+      - 'docker-entrypoint.sh'
+
+jobs:
+  docker-build:
+    name: Test Docker Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Validate Docker Compose files
+        run: |
+          echo "Validating docker-compose.yml..."
+          docker compose config > /dev/null
+          echo "✓ docker-compose.yml is valid"
+          
+          echo "Validating docker-compose.dev.yml..."
+          docker compose -f docker-compose.dev.yml config > /dev/null
+          echo "✓ docker-compose.dev.yml is valid"
+          
+          echo "Validating docker-compose.prod.yml..."
+          docker compose -f docker-compose.prod.yml config > /dev/null
+          echo "✓ docker-compose.prod.yml is valid"
+      
+      - name: Validate shell scripts
+        run: |
+          echo "Validating docker-entrypoint.sh..."
+          sh -n docker-entrypoint.sh
+          echo "✓ docker-entrypoint.sh syntax is valid"
+      
+      - name: Build Backend Docker image
+        run: |
+          echo "Building backend image..."
+          docker build -f Dockerfile.backend -t finalcarrera-backend:test .
+          echo "✓ Backend image built successfully"
+      
+      - name: Build Frontend Docker image
+        run: |
+          echo "Building frontend image..."
+          docker build -f Dockerfile.frontend -t finalcarrera-frontend:test .
+          echo "✓ Frontend image built successfully"
+      
+      - name: Test Backend image
+        run: |
+          echo "Testing backend container startup..."
+          docker run --rm -d --name test-backend \
+            -e DB_CONNECTION=sqlite \
+            -e DB_DATABASE=:memory: \
+            finalcarrera-backend:test
+          
+          # Wait for container to start
+          sleep 5
+          
+          # Check if container is still running
+          if docker ps | grep test-backend; then
+            echo "✓ Backend container started successfully"
+            docker stop test-backend
+          else
+            echo "✗ Backend container failed to start"
+            docker logs test-backend
+            exit 1
+          fi
+      
+      - name: Summary
+        if: success()
+        run: |
+          echo "================================"
+          echo "All Docker build tests passed! ✓"
+          echo "================================"
