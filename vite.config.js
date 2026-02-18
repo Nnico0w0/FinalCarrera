@@ -16,9 +16,6 @@ export default defineConfig({
                 },
             },
         }),
-
-
-        
     ],
     server: {
         host: '0.0.0.0',
@@ -30,6 +27,19 @@ export default defineConfig({
         },
         watch: {
             usePolling: true,
+        },
+        proxy: {
+            // Proxy all requests except Vite's internal requests to Laravel backend
+            '': {
+                target: 'http://backend:8000',
+                changeOrigin: true,
+                bypass: function (req, res, options) {
+                    // Don't proxy Vite's internal requests (HMR, node_modules, etc.)
+                    if (req.url.includes('/@') || req.url.includes('/node_modules/')) {
+                        return req.url;
+                    }
+                },
+            },
         },
     },
 });
