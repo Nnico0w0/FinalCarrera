@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on error, undefined variables, and pipe failures
+set -euo pipefail
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -77,6 +80,7 @@ setup_env_file() {
 # Stop and remove existing containers (cleanup)
 cleanup_containers() {
     print_info "Cleaning up existing containers..."
+    print_warning "This will remove existing containers and volumes (database data will be lost)"
     docker-compose down -v 2>/dev/null || true
     print_success "Cleanup completed"
 }
@@ -84,7 +88,7 @@ cleanup_containers() {
 # Build Docker images
 build_images() {
     print_info "Building Docker images (this may take a few minutes)..."
-    if docker-compose build --no-cache; then
+    if docker-compose build; then
         print_success "Docker images built successfully"
     else
         print_error "Failed to build Docker images"
@@ -106,11 +110,10 @@ start_containers() {
 # Wait for containers to be ready
 wait_for_containers() {
     print_info "Waiting for containers to be ready..."
-    sleep 15
     
     print_info "Checking backend container health..."
     local retries=0
-    local max_retries=30
+    local max_retries=40
     
     while [ $retries -lt $max_retries ]; do
         if docker-compose exec -T backend php artisan --version &> /dev/null; then
@@ -118,11 +121,14 @@ wait_for_containers() {
             return 0
         fi
         retries=$((retries + 1))
-        echo -n "."
+        if [ $((retries % 5)) -eq 0 ]; then
+            echo -n "."
+        fi
         sleep 2
     done
     
     print_error "Backend container did not become ready in time"
+    print_info "You can check logs with: docker-compose logs backend"
     exit 1
 }
 
@@ -175,8 +181,40 @@ display_info() {
     echo -e "\n${YELLOW}Note:${NC} Remember to configure your Stripe API keys in .env file for payment functionality\n"
 }
 
+# Show help message
+show_help() {
+    echo "FinalCarrera Project Setup Script"
+    echo ""
+    echo "Usage: ./setup.sh [OPTIONS]"
+    echo ""
+    echo "This script automates the initial setup of the FinalCarrera project."
+    echo ""
+    echo "Options:"
+    echo "  -h, --help     Show this help message"
+    echo ""
+    echo "What this script does:"
+    echo "  1. Checks for Docker and Docker Compose"
+    echo "  2. Creates .env file from .env.example"
+    echo "  3. Builds and starts Docker containers"
+    echo "  4. Runs database migrations"
+    echo "  5. Seeds the database with initial data"
+    echo "  6. Displays access URLs and useful commands"
+    echo ""
+    echo "Requirements:"
+    echo "  - Docker"
+    echo "  - Docker Compose"
+    echo "  - Docker daemon running"
+    echo ""
+}
+
 # Main setup process
 main() {
+    # Check for help flag
+    if [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
+        show_help
+        exit 0
+    fi
+    
     print_header "FinalCarrera Project Setup"
     
     # Pre-flight checks
@@ -197,5 +235,5 @@ main() {
     display_info
 }
 
-# Run main function
-main
+# Run main function with all arguments
+main "$@"
