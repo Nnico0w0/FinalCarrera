@@ -3,7 +3,13 @@
 set -e
 
 echo "Waiting for database to be ready..."
-until php artisan db:show 2>/dev/null; do
+
+# Use pg_isready to check PostgreSQL availability with environment variables
+DB_HOST="${DB_HOST:-db}"
+DB_PORT="${DB_PORT:-5432}"
+DB_USERNAME="${DB_USERNAME:-postgres}"
+
+until PGPASSWORD="${DB_PASSWORD}" psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USERNAME}" -d "${DB_DATABASE}" -c '\q' 2>/dev/null; do
   echo "Database is unavailable - waiting..."
   sleep 2
 done
