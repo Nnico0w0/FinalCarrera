@@ -15,7 +15,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-//user rotues
+//user routes
 
 Route::get('/', [UserController::class,'index'])->name('home');
 Route::get('/pricing', [PricingController::class,'index'])->name('pricing');
