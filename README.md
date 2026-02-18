@@ -31,7 +31,30 @@ For detailed API documentation and usage examples, see [API_DOCUMENTATION.md](AP
 ### Installation
 ## Installation
 
-### Option 1: Docker Installation (Recommended)
+### Quick Setup (Automated Script)
+
+The easiest way to set up the project is using our automated setup script:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd FinalCarrera
+
+# Run the setup script
+./setup.sh
+```
+
+The script will automatically:
+- Check for Docker and Docker Compose installation
+- Create the `.env` file from `.env.example`
+- Build and start all Docker containers
+- Run database migrations
+- Seed the database with admin user and sample data
+- Display access URLs and useful commands
+
+**Note:** Make sure Docker and Docker Compose are installed and Docker daemon is running before executing the script.
+
+### Option 1: Docker Installation (Manual Setup)
 
 **Requirements:** Docker and Docker Compose
 
