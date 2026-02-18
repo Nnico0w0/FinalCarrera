@@ -3,3 +3,13 @@ data
 node_modules
 dist
 vendor
+/public/hot
+/public/storage
+/storage/*.key
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
