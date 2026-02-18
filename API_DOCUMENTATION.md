@@ -52,6 +52,18 @@ Create a new user account and receive a JWT token.
 }
 ```
 
+**Error Response (422):**
+```json
+{
+  "success": false,
+  "message": "Validation error",
+  "errors": {
+    "email": ["The email has already been taken."],
+    "password": ["The password field must be at least 8 characters."]
+  }
+}
+```
+
 **Example:**
 ```bash
 curl -X POST http://localhost:8000/api/auth/register \
@@ -95,6 +107,14 @@ Authenticate an existing user and receive a JWT token.
 }
 ```
 
+**Error Response (401):**
+```json
+{
+  "success": false,
+  "message": "Invalid credentials"
+}
+```
+
 **Example:**
 ```bash
 curl -X POST http://localhost:8000/api/auth/login \
@@ -129,6 +149,13 @@ Authorization: Bearer {your_token_here}
       "updated_at": "2024-01-01T00:00:00.000000Z"
     }
   }
+}
+```
+
+**Error Response (401):**
+```json
+{
+  "message": "Unauthenticated."
 }
 ```
 
@@ -198,6 +225,40 @@ For all protected endpoints, include the JWT token in the Authorization header:
 ```bash
 curl -X GET http://localhost:8000/api/v1/products \
   -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..."
+```
+
+### Authentication Flow Example
+
+1. **Register a new user:**
+```bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "password": "MySecure123!",
+    "password_confirmation": "MySecure123!"
+  }'
+```
+
+2. **Save the access_token from the response**
+
+3. **Use the token to access protected endpoints:**
+```bash
+curl -X GET http://localhost:8000/api/auth/me \
+  -H "Authorization: Bearer {your_access_token}"
+```
+
+4. **When the token is about to expire, refresh it:**
+```bash
+curl -X POST http://localhost:8000/api/auth/refresh \
+  -H "Authorization: Bearer {your_access_token}"
+```
+
+5. **When done, logout:**
+```bash
+curl -X POST http://localhost:8000/api/auth/logout \
+  -H "Authorization: Bearer {your_access_token}"
 ```
 
 ## Available Endpoints
