@@ -1,13 +1,24 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
 import UserLayouts from './Layouts/UserLayouts.vue';
 import Hero from './Layouts/Hero.vue';
 import Products from '../User/Components/Products.vue'
-//products list 
-defineProps({
-    products: Array
-})
 
+// products list from API
+const products = ref([]);
+const loading = ref(true);
+
+onMounted(async () => {
+    try {
+        const response = await window.axios.get('/api/v1/products?per_page=8');
+        products.value = response.data.data.data;
+        loading.value = false;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        loading.value = false;
+    }
+});
 
 </script>
 <template>
@@ -20,7 +31,10 @@ defineProps({
                 <h2 class="text-2xl font-bold tracking-tight text-gray-900">List of products</h2>
 
                 <!-- product list component -->
-                <Products :products="products"></Products>
+                <div v-if="loading" class="text-center py-8">
+                    <p class="text-gray-500">Loading products...</p>
+                </div>
+                <Products v-else :products="products"></Products>
                 <!-- end -->
                 <div class="flex justify-center mt-5">
                     <Link :href="route('products.index')"
@@ -33,5 +47,4 @@ defineProps({
         </div>
     </UserLayouts>
 </template>
-
 
