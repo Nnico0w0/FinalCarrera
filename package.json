@@ -1,4 +1,5 @@
 {
+    "name": "FinalCarrera",
     "private": true,
     "type": "module",
     "scripts": {
