@@ -122,7 +122,8 @@ wait_for_containers() {
             return 0
         fi
         retries=$((retries + 1))
-        if [ $((retries % 5)) -eq 0 ]; then
+        # Show progress dot every 3 retries (6 seconds)
+        if [ $((retries % 3)) -eq 0 ]; then
             echo -n "."
         fi
         sleep 2
