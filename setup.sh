@@ -137,8 +137,8 @@ wait_for_containers() {
 
 # Run database migrations
 run_migrations() {
-    print_info "Running database migrations..."
-    if docker-compose exec -T backend php artisan migrate --force; then
+    print_info "Resetting database schema (migrate:fresh)..."
+    if docker-compose exec -T backend php artisan migrate:fresh --force; then
         print_success "Database migrations completed"
     else
         print_error "Failed to run database migrations"

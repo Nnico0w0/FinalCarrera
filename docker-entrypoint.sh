@@ -22,9 +22,13 @@ echo "Database is ready!"
 php artisan config:clear
 php artisan cache:clear
 
-# Run migrations
-echo "Running migrations..."
-php artisan migrate --force
+# Run migrations optionally (default: skip, setup script handles it)
+if [ "${RUN_MIGRATIONS_ON_START:-false}" = "true" ]; then
+  echo "Running migrations..."
+  php artisan migrate --force
+else
+  echo "Skipping automatic migrations (controlled by setup script)"
+fi
 
 # Cache configuration for better performance (only in production)
 if [ "$APP_ENV" = "production" ]; then
