@@ -44,7 +44,6 @@ export default defineConfig({
         proxy: {
             '/': {
                 target: backendUrl,
-                changeOrigin: true,
                 secure: false,
                 bypass(req) {
                     // Let Vite handle its own asset and HMR endpoints; proxy everything else to Laravel
