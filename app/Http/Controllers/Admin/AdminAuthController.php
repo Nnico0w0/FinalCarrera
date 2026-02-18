@@ -16,13 +16,21 @@ class AdminAuthController extends Controller
 
     public function login(Request $request)
     {
-        // Add your login logic here
+        // Validate the login request
+        $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+
         // Check if the user is an admin and redirect accordingly
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'isAdmin' => true])) {
-            return redirect()->route('admin.dashboard'); // Redirect to the admin dashboard
+            $request->session()->regenerate();
+            return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('admin.login')->with('error', 'Invalid credentials.');
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records or you do not have admin privileges.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
