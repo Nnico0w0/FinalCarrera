@@ -111,6 +111,24 @@ class AuthController extends Controller
                     'message' => 'Invalid credentials'
                 ], 401);
             }
+
+            // Get the authenticated user
+            $user = JWTAuth::user();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Login successful',
+                'data' => [
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ],
+                    'access_token' => $token,
+                    'token_type' => 'bearer',
+                    'expires_in' => auth('api')->factory()->getTTL() * 60
+                ]
+            ], 200);
         } catch (JWTException $e) {
             return response()->json([
                 'success' => false,
@@ -118,23 +136,6 @@ class AuthController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-
-        $user = auth('api')->user();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Login successful',
-            'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => auth('api')->factory()->getTTL() * 60
-            ]
-        ], 200);
     }
 
     /**
