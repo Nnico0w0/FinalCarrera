@@ -109,7 +109,7 @@ start_containers() {
 
 # Wait for containers to be ready
 wait_for_containers() {
-    print_info "Waiting for containers to be ready..."
+    print_info "Waiting for containers to be ready (this may take up to 2 minutes)..."
     
     print_info "Checking backend container health..."
     local retries=0
@@ -117,6 +117,7 @@ wait_for_containers() {
     
     while [ $retries -lt $max_retries ]; do
         if docker-compose exec -T backend php artisan --version &> /dev/null; then
+            echo "" # New line after dots
             print_success "Backend container is ready"
             return 0
         fi
@@ -127,6 +128,7 @@ wait_for_containers() {
         sleep 2
     done
     
+    echo "" # New line after dots
     print_error "Backend container did not become ready in time"
     print_info "You can check logs with: docker-compose logs backend"
     exit 1
