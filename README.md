@@ -13,9 +13,27 @@
 </div>
 
 
-### Installation
+## Installation
 
-Requirements: MySQL, PHP 8.1, Node.js and composer.
+### Option 1: Docker Installation (Recommended)
+
+**Requirements:** Docker and Docker Compose
+
+1. Clone the repo
+2. Copy `.env.example` into `.env`
+3. Start the containers: `docker-compose up -d`
+4. Run database migrations: `docker-compose exec backend php artisan migrate --seed`
+5. Run seeders: `docker-compose exec backend php artisan db:seed --class=AdminSeeder`
+6. Access the application:
+   - Frontend: http://localhost:5173
+   - Backend: http://localhost:8000
+   - Admin: http://localhost:8000/admin/login
+
+For detailed Docker instructions, see [DOCKER.md](DOCKER.md)
+
+### Option 2: Traditional Installation
+
+Requirements: MySQL/PostgreSQL, PHP 8.1, Node.js and composer.
 
 1. Clone the repo
 2. Copy .env.example into .env and configure database credentials

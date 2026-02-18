@@ -2,3 +2,7 @@ data
 .env
 node_modules
 dist
+
+# Docker volumes and data
+docker/data/
+postgres_data/
