@@ -5,6 +5,7 @@ import UserLayouts from './Layouts/UserLayouts.vue';
 import { router, usePage } from '@inertiajs/vue3';
 
 defineProps({
+    cart: Object,
     userAddress: Object
 })
 

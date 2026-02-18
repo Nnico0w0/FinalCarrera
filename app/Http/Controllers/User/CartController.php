@@ -13,31 +13,33 @@ use Inertia\Inertia;
 
 class CartController extends Controller
 {
-    public function view(Request $request, Product $product)
+    private const EMPTY_CART_MESSAGE = 'Your cart is empty';
+
+    public function view(Request $request)
     {
-       
         $user = $request->user();
         if ($user) {
             $cartItems = CartItem::where('user_id', $user->id)->get();
             $userAddress = UserAddress::where('user_id', $user->id)->where('isMain', 1)->first();
             if ($cartItems->count() > 0) {
+                $cart = new CartResource(Cart::getProductsAndCartItems());
                 return Inertia::render(
                     'User/CartList',
                     [
-                        'cartItems' => $cartItems,
+                        'cart' => $cart,
                         'userAddress' => $userAddress
                     ]
                 );
-            } 
-            
-        }
-        else {
+            } else {
+                return redirect()->back()->with('info', self::EMPTY_CART_MESSAGE);
+            }
+        } else {
             $cartItems = Cart::getCookieCartItems();
             if (count($cartItems) > 0) {
-                $cartItems = new CartResource(Cart::getProductsAndCartItems());
-                return  Inertia::render('User/CartList', ['cartItems' => $cartItems]);
+                $cart = new CartResource(Cart::getProductsAndCartItems());
+                return Inertia::render('User/CartList', ['cart' => $cart]);
             } else {
-                return redirect()->back();
+                return redirect()->back()->with('info', self::EMPTY_CART_MESSAGE);
             }
         }
     }
@@ -106,7 +108,7 @@ class CartController extends Controller
         if ($user) {
             CartItem::query()->where(['user_id' => $user->id, 'product_id' => $product->id])->first()?->delete();
             if (CartItem::count() <= 0) {
-                return redirect()->route('home')->with('info', 'your cart is empty');
+                return redirect()->route('home')->with('info', self::EMPTY_CART_MESSAGE);
             } else {
                 return redirect()->back()->with('success', 'item removed successfully');
             }
@@ -120,7 +122,7 @@ class CartController extends Controller
             }
             Cart::setCookieCartItems($cartItems);
             if (count($cartItems) <= 0) {
-                return redirect()->route('home')->with('info', 'your cart is empty');
+                return redirect()->route('home')->with('info', self::EMPTY_CART_MESSAGE);
             } else {
                 return redirect()->back()->with('success', 'item removed successfully');
             }
