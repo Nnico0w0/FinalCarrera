@@ -121,16 +121,16 @@ class ProductSeeder extends Seeder
             'description'=>'Business-class laptop with lightweight carbon fiber design, excellent keyboard, and enterprise-grade security features.'
         ]);
 
-        // Product 10: Dell Monitor Product (bonus item)
+        // Product 10: Samsung Phone (another smartphone option)
         Product::create([
-            'title' => 'Dell UltraSharp 27" Monitor',
+            'title' => 'Samsung Galaxy A54 5G',
             'price' => 449.99,
-            'quantity' => 14,
-            'category_id'=> 1, // Laptops category (as closest match)
-            'brand_id'=>1, // Dell
+            'quantity' => 18,
+            'category_id'=> 2, // Smartphones
+            'brand_id'=>2, // Samsung
             'published' => true,
             'inStock' => true,
-            'description'=>'Professional 4K monitor with stunning color accuracy, ergonomic design, and multiple connectivity options. Perfect for designers and content creators.'
+            'description'=>'Mid-range smartphone with excellent camera, long battery life, and 5G connectivity. Perfect balance of features and affordability.'
         ]);
     }
 }

@@ -13,6 +13,8 @@ use Inertia\Inertia;
 
 class CartController extends Controller
 {
+    private const EMPTY_CART_MESSAGE = 'Your cart is empty';
+
     public function view(Request $request)
     {
         $user = $request->user();
@@ -29,7 +31,7 @@ class CartController extends Controller
                     ]
                 );
             } else {
-                return redirect()->back()->with('info', 'Your cart is empty');
+                return redirect()->back()->with('info', self::EMPTY_CART_MESSAGE);
             }
         } else {
             $cartItems = Cart::getCookieCartItems();
@@ -37,7 +39,7 @@ class CartController extends Controller
                 $cart = new CartResource(Cart::getProductsAndCartItems());
                 return Inertia::render('User/CartList', ['cart' => $cart]);
             } else {
-                return redirect()->back()->with('info', 'Your cart is empty');
+                return redirect()->back()->with('info', self::EMPTY_CART_MESSAGE);
             }
         }
     }
@@ -106,7 +108,7 @@ class CartController extends Controller
         if ($user) {
             CartItem::query()->where(['user_id' => $user->id, 'product_id' => $product->id])->first()?->delete();
             if (CartItem::count() <= 0) {
-                return redirect()->route('home')->with('info', 'your cart is empty');
+                return redirect()->route('home')->with('info', self::EMPTY_CART_MESSAGE);
             } else {
                 return redirect()->back()->with('success', 'item removed successfully');
             }
@@ -120,7 +122,7 @@ class CartController extends Controller
             }
             Cart::setCookieCartItems($cartItems);
             if (count($cartItems) <= 0) {
-                return redirect()->route('home')->with('info', 'your cart is empty');
+                return redirect()->route('home')->with('info', self::EMPTY_CART_MESSAGE);
             } else {
                 return redirect()->back()->with('success', 'item removed successfully');
             }
