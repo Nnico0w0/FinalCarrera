@@ -1,1 +1,0 @@
-import{b as e,o}from"./app-ca6ba537.js";import{_ as r}from"./_plugin-vue_export-helper-c27b6911.js";const t={};function s(c,n){return o(),e("div")}const f=r(t,[["render",s],["__file","/app/resources/js/Pages/Admin/Components/Footer.vue"]]);export{f as default};
