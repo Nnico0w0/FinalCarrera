@@ -5,6 +5,201 @@
 http://localhost:8000/api/v1
 ```
 
+## Authentication
+
+This API uses JWT (JSON Web Token) authentication. To access protected endpoints, you need to include the JWT token in the Authorization header.
+
+### Authentication Endpoints
+
+#### Register
+Create a new user account and receive a JWT token.
+
+**Endpoint:** `POST /api/auth/register`
+
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "SecureP@ss123",
+  "password_confirmation": "SecureP@ss123"
+}
+```
+
+**Password Requirements:**
+- Minimum 8 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+- At least one special symbol
+
+**Success Response (201):**
+```json
+{
+  "success": true,
+  "message": "User registered successfully",
+  "data": {
+    "user": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "created_at": "2024-01-01T00:00:00.000000Z"
+    },
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+    "token_type": "bearer",
+    "expires_in": 3600
+  }
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "SecureP@ss123",
+    "password_confirmation": "SecureP@ss123"
+  }'
+```
+
+#### Login
+Authenticate an existing user and receive a JWT token.
+
+**Endpoint:** `POST /api/auth/login`
+
+**Request Body:**
+```json
+{
+  "email": "john@example.com",
+  "password": "SecureP@ss123"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "user": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+    "token_type": "bearer",
+    "expires_in": 3600
+  }
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "SecureP@ss123"
+  }'
+```
+
+#### Get Current User
+Get the authenticated user's information.
+
+**Endpoint:** `GET /api/auth/me`
+
+**Headers:**
+```
+Authorization: Bearer {your_token_here}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "email_verified_at": null,
+      "created_at": "2024-01-01T00:00:00.000000Z",
+      "updated_at": "2024-01-01T00:00:00.000000Z"
+    }
+  }
+}
+```
+
+**Example:**
+```bash
+curl -X GET http://localhost:8000/api/auth/me \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..."
+```
+
+#### Refresh Token
+Refresh your JWT token to extend the session.
+
+**Endpoint:** `POST /api/auth/refresh`
+
+**Headers:**
+```
+Authorization: Bearer {your_token_here}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Token refreshed successfully",
+  "data": {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+    "token_type": "bearer",
+    "expires_in": 3600
+  }
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8000/api/auth/refresh \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..."
+```
+
+#### Logout
+Invalidate the current JWT token.
+
+**Endpoint:** `POST /api/auth/logout`
+
+**Headers:**
+```
+Authorization: Bearer {your_token_here}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Successfully logged out"
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8000/api/auth/logout \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..."
+```
+
+### Using JWT Token for Protected Endpoints
+
+For all protected endpoints, include the JWT token in the Authorization header:
+
+```bash
+curl -X GET http://localhost:8000/api/v1/products \
+  -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc..."
+```
+
 ## Available Endpoints
 
 ### Users
