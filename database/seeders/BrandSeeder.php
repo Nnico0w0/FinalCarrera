@@ -15,15 +15,18 @@ class BrandSeeder extends Seeder
     {
         Brand::create([
             'name' => 'Dell',
-            'slug'=>'dell'
         ]);
         Brand::create([
             'name' => 'Samsung',
-            'slug'=>'dell'
         ]);
         Brand::create([
             'name' => 'Apple',
-            'slug'=>'dell'
+        ]);
+        Brand::create([
+            'name' => 'HP',
+        ]);
+        Brand::create([
+            'name' => 'Lenovo',
         ]);
     }
 }
