@@ -12,9 +12,9 @@ defineProps({
         <div class="bg-white py-24 sm:py-32">
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl sm:text-center">
-                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">buidServe Hosting Plans</h2>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Productos Destacados de TecnoSector</h2>
                     <p class="mt-6 text-lg leading-8 text-gray-600">
-                        Choose from our most popular hosting packages. Reliable, scalable, and affordable hosting solutions for your business.
+                        Descubre nuestros productos más populares en equipos electrónicos. Tecnología de calidad a precios accesibles.
                     </p>
                 </div>
                 <div class="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none">
@@ -33,7 +33,7 @@ defineProps({
                             <p class="mt-4 text-sm leading-6 text-gray-600">{{ product.description }}</p>
                             <p class="mt-6 flex items-baseline gap-x-1">
                                 <span class="text-4xl font-bold tracking-tight text-gray-900">${{ product.price }}</span>
-                                <span class="text-sm font-semibold leading-6 text-gray-600">/month</span>
+                                <span class="text-sm font-semibold leading-6 text-gray-600"></span>
                             </p>
                             <div v-if="product.product_images && product.product_images.length > 0" class="mt-6">
                                 <img :src="product.product_images[0].image" :alt="product.title" 
@@ -44,30 +44,30 @@ defineProps({
                                     <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
                                     </svg>
-                                    {{ product.brand ? product.brand.name : 'Premium' }} Hosting
+                                    {{ product.brand ? product.brand.name : 'Premium' }} Brand
                                 </li>
                                 <li class="flex gap-x-3">
                                     <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
                                     </svg>
-                                    {{ product.quantity }}GB Storage
+                                    {{ product.quantity }} unidades disponibles
                                 </li>
                                 <li class="flex gap-x-3">
                                     <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
                                     </svg>
-                                    24/7 Support
+                                    Garantía extendida
                                 </li>
                                 <li class="flex gap-x-3">
                                     <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
                                     </svg>
-                                    99.9% Uptime
+                                    Envío gratuito
                                 </li>
                             </ul>
                             <Link :href="route('products.index')"
                                 :class="[index === 1 ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500' : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300', 'mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600']">
-                            Get started
+                            Comprar ahora
                             </Link>
                         </div>
                     </div>
@@ -78,7 +78,7 @@ defineProps({
                 <div class="mt-12 text-center">
                     <Link :href="route('products.index')"
                         class="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                    View all hosting plans <span aria-hidden="true">→</span>
+                    Ver todos los productos <span aria-hidden="true">→</span>
                     </Link>
                 </div>
             </div>
