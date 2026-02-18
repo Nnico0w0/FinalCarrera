@@ -6,9 +6,7 @@ This document describes the testing and validation performed on the Docker setup
 
 All Docker configuration files have been validated:
 
-- ✅ `docker-compose.yml` - Valid syntax
-- ✅ `docker-compose.dev.yml` - Valid syntax
-- ✅ `docker-compose.prod.yml` - Valid syntax
+- ✅ `docker-compose.yml` - Valid syntax (development stack)
 - ✅ `docker-entrypoint.sh` - Valid shell script syntax
 - ✅ `Dockerfile.backend` - Valid Dockerfile
 - ✅ `Dockerfile.frontend` - Valid Dockerfile
@@ -24,7 +22,7 @@ All Docker configuration files have been validated:
 │  │   Frontend       │      │    Backend       │            │
 │  │   Container      │◄────►│   Container      │            │
 │  │                  │      │                  │            │
-│  │  Node.js 18      │      │  PHP 8.1-FPM     │            │
+│  │  Node.js 18      │      │  PHP 8.2-FPM     │            │
 │  │  Vite Dev Server │      │  Laravel 10      │            │
 │  │  Port: 5173      │      │  Port: 8000      │            │
 │  └──────────────────┘      └─────────┬────────┘            │
@@ -55,7 +53,7 @@ All Docker configuration files have been validated:
   - POSTGRES_PASSWORD
 
 ### 2. Backend Container (Laravel)
-- **Base Image**: php:8.1-fpm-alpine
+- **Base Image**: php:8.2-fpm-alpine
 - **Container Name**: finalcarrera_backend
 - **Port**: 8000 (configurable via BACKEND_PORT)
 - **PHP Extensions**: 
@@ -104,19 +102,14 @@ All Docker configuration files have been validated:
 
 ## Environment Configurations
 
-### Development Mode (docker-compose.dev.yml)
+### Development Stack (docker-compose.yml)
 - APP_ENV=local
 - APP_DEBUG=true
 - Full error reporting
 - Hot module reloading enabled
 - File watching enabled
 
-### Production Mode (docker-compose.prod.yml)
-- APP_ENV=production
-- APP_DEBUG=false
-- Error logging only
-- Nginx reverse proxy
-- Optimized caching
+> ℹ️  Este repositorio solo incluye la pila de desarrollo. Para un despliegue en producción necesitarás definir tu propia estrategia (por ejemplo, imágenes publicadas o infraestructura específica).
 
 ## Testing Checklist
 

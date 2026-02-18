@@ -49,7 +49,7 @@ For detailed Docker instructions, see [DOCKER.md](DOCKER.md)
 
 ### Option 2: Traditional Installation
 
-Requirements: MySQL/PostgreSQL, PHP 8.1, Node.js and composer.
+Requirements: MySQL/PostgreSQL, PHP 8.2, Node.js and composer.
 
 1. Clone the repo
 2. Copy .env.example into .env and configure database credentials

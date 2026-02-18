@@ -219,24 +219,16 @@ STRIPE_SECRET=tu_clave_secreta_stripe
 
 ## Despliegue en Producción
 
-Para despliegue en producción, realiza estos cambios:
+Actualmente solo mantenemos el archivo `docker-compose.yml`, pensado para desarrollo local con hot reload. Para un despliegue productivo deberás preparar tu propia infraestructura (por ejemplo, imágenes publicadas en un registro más un orquestador) y ajustar variables como `APP_ENV`, `APP_DEBUG` y las claves de terceros.
 
-1. Actualiza `.env`:
-```env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://tu-dominio.com
-```
+Como base puedes reutilizar las imágenes generadas por `Dockerfile.backend` y `Dockerfile.frontend`, ejecutando:
 
-2. Construye el frontend para producción:
 ```bash
-docker compose exec frontend npm run build
+docker build -f Dockerfile.backend -t finalcarrera-backend:prod .
+docker build -f Dockerfile.frontend -t finalcarrera-frontend:prod .
 ```
 
-3. Usa el archivo de compose de producción:
-```bash
-docker compose -f docker-compose.prod.yml up -d
-```
+Después, despliega esos artefactos con la herramienta que prefieras (Docker Compose, ECS, Kubernetes, etc.) definiendo explícitamente los volúmenes y servicios que tu plataforma de producción requiera.
 
 ## Arquitectura
 

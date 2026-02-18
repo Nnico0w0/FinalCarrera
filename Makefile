@@ -16,9 +16,9 @@ up: ## Start all containers
 	@echo 'Frontend: http://localhost:5173'
 	@echo 'Backend: http://localhost:8000'
 
-up-dev: ## Start all containers in development mode
-	@echo '${BLUE}Starting containers in development mode...${RESET}'
-	docker-compose -f docker-compose.dev.yml up -d
+up-dev: ## Start all containers (legacy dev alias)
+	@echo '${BLUE}Starting containers (development defaults)...${RESET}'
+	docker-compose up -d
 	@echo '${GREEN}Containers started!${RESET}'
 	@echo 'Frontend: http://localhost:5173'
 	@echo 'Backend: http://localhost:8000'
@@ -28,9 +28,9 @@ down: ## Stop all containers
 	docker-compose down
 	@echo '${GREEN}Containers stopped!${RESET}'
 
-down-dev: ## Stop development containers
-	@echo '${BLUE}Stopping development containers...${RESET}'
-	docker-compose -f docker-compose.dev.yml down
+down-dev: ## Stop containers (legacy dev alias)
+	@echo '${BLUE}Stopping containers (development defaults)...${RESET}'
+	docker-compose down
 	@echo '${GREEN}Containers stopped!${RESET}'
 
 restart: ## Restart all containers

@@ -30,19 +30,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       
-      - name: Validate Docker Compose files
+      - name: Validate Docker Compose file
         run: |
           echo "Validating docker-compose.yml..."
           docker compose config > /dev/null
           echo "✓ docker-compose.yml is valid"
-          
-          echo "Validating docker-compose.dev.yml..."
-          docker compose -f docker-compose.dev.yml config > /dev/null
-          echo "✓ docker-compose.dev.yml is valid"
-          
-          echo "Validating docker-compose.prod.yml..."
-          docker compose -f docker-compose.prod.yml config > /dev/null
-          echo "✓ docker-compose.prod.yml is valid"
       
       - name: Validate shell scripts
         run: |
