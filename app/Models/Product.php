@@ -22,6 +22,7 @@ class Product extends Model
         'published',
         'inStock',
         'price',
+        'sales_count',
         'quantity',
         'category_id',
         'brand_id',
