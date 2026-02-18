@@ -33,7 +33,6 @@ defineProps({
                             <p class="mt-4 text-sm leading-6 text-gray-600">{{ product.description }}</p>
                             <p class="mt-6 flex items-baseline gap-x-1">
                                 <span class="text-4xl font-bold tracking-tight text-gray-900">${{ product.price }}</span>
-                                <span class="text-sm font-semibold leading-6 text-gray-600"></span>
                             </p>
                             <div v-if="product.product_images && product.product_images.length > 0" class="mt-6">
                                 <img :src="product.product_images[0].image" :alt="product.title" 
