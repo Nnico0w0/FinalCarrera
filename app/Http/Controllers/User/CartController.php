@@ -13,31 +13,31 @@ use Inertia\Inertia;
 
 class CartController extends Controller
 {
-    public function view(Request $request, Product $product)
+    public function view(Request $request)
     {
-       
         $user = $request->user();
         if ($user) {
             $cartItems = CartItem::where('user_id', $user->id)->get();
             $userAddress = UserAddress::where('user_id', $user->id)->where('isMain', 1)->first();
             if ($cartItems->count() > 0) {
+                $cart = new CartResource(Cart::getProductsAndCartItems());
                 return Inertia::render(
                     'User/CartList',
                     [
-                        'cartItems' => $cartItems,
+                        'cart' => $cart,
                         'userAddress' => $userAddress
                     ]
                 );
-            } 
-            
-        }
-        else {
+            } else {
+                return redirect()->back()->with('info', 'Your cart is empty');
+            }
+        } else {
             $cartItems = Cart::getCookieCartItems();
             if (count($cartItems) > 0) {
-                $cartItems = new CartResource(Cart::getProductsAndCartItems());
-                return  Inertia::render('User/CartList', ['cartItems' => $cartItems]);
+                $cart = new CartResource(Cart::getProductsAndCartItems());
+                return Inertia::render('User/CartList', ['cart' => $cart]);
             } else {
-                return redirect()->back();
+                return redirect()->back()->with('info', 'Your cart is empty');
             }
         }
     }
