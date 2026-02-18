@@ -2,6 +2,19 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
+const backendUrl = process.env.VITE_BACKEND_URL ?? 'http://localhost:8000';
+const viteInternalPrefixes = [
+    '/@vite',
+    '/@fs',
+    '/@id',
+    '/__vite_ping',
+    '/__hmr',
+    '/__socket',
+    '/@react-refresh',
+    '/node_modules',
+    '/resources/',
+];
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -19,25 +32,26 @@ export default defineConfig({
     ],
     server: {
         host: '0.0.0.0',
-        port: 5173,
+        port: 3000,
         strictPort: true,
         hmr: {
             host: 'localhost',
-            clientPort: 5173,
+            clientPort: 3000,
         },
         watch: {
             usePolling: true,
         },
         proxy: {
-            // Proxy all requests except Vite's internal requests to Laravel backend
-            '': {
-                target: 'http://backend:8000',
+            '/': {
+                target: backendUrl,
                 changeOrigin: true,
-                bypass: function (req, res, options) {
-                    // Don't proxy Vite's internal requests (HMR, node_modules, etc.)
-                    if (req.url.includes('/@') || req.url.includes('/node_modules/')) {
+                secure: false,
+                bypass(req) {
+                    // Let Vite handle its own asset and HMR endpoints; proxy everything else to Laravel
+                    if (viteInternalPrefixes.some((prefix) => req.url.startsWith(prefix))) {
                         return req.url;
                     }
+                    return null;
                 },
             },
         },

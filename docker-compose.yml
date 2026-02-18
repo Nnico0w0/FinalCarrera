@@ -63,11 +63,12 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-development}
       - VITE_APP_URL=${APP_URL:-http://localhost:8000}
+      - VITE_BACKEND_URL=http://backend:8000
     volumes:
       - ./:/app
       - /app/node_modules
     ports:
-      - "${FRONTEND_PORT:-5173}:5173"
+      - "${FRONTEND_PORT:-3000}:3000"
     depends_on:
       - backend
     networks:
