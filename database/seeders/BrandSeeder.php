@@ -13,20 +13,6 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        Brand::create([
-            'name' => 'Dell',
-        ]);
-        Brand::create([
-            'name' => 'Samsung',
-        ]);
-        Brand::create([
-            'name' => 'Apple',
-        ]);
-        Brand::create([
-            'name' => 'HP',
-        ]);
-        Brand::create([
-            'name' => 'Lenovo',
-        ]);
+        Brand::factory(fake()->numberBetween(10, 20))->create();
     }
 }

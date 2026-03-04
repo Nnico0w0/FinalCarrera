@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\UserAddress;
@@ -23,15 +24,23 @@ class UserPurchaseSeeder extends Seeder
             $products = Product::all();
         }
 
+        $targetUsers = fake()->numberBetween(200, 400);
+        $existingUsers = User::count();
+        $usersToCreate = max($targetUsers - $existingUsers, 0);
+
+        if ($usersToCreate === 0) {
+            return;
+        }
+
         User::factory()
-            ->count(5)
+            ->count($usersToCreate)
             ->create()
             ->each(function (User $user) use ($products) {
                 $address = UserAddress::factory()->for($user)->create([
                     'isMain' => true,
                 ]);
 
-                $ordersToCreate = fake()->numberBetween(3, 10);
+                $ordersToCreate = fake()->numberBetween(1, 30);
 
                 for ($i = 0; $i < $ordersToCreate; $i++) {
                     $selectionCount = min(fake()->numberBetween(1, 4), $products->count());
@@ -51,19 +60,38 @@ class UserPurchaseSeeder extends Seeder
                         $total += $quantity * $product->price;
                     }
 
+                    $purchaseDate = fake()->dateTimeBetween('-8 months', 'now');
+                    $isPaid = fake()->boolean();
+                    $orderStatus = $isPaid ? 'paid' : 'unpaid';
+
                     $order = Order::factory()->create([
                         'user_address_id' => $address->id,
                         'total_price' => $total,
-                        'status' => fake()->randomElement(['paid', 'pending', 'unpaid']),
+                        'status' => $orderStatus,
                         'created_by' => $user->id,
                         'updated_by' => $user->id,
+                        'created_at' => $purchaseDate,
+                        'updated_at' => $purchaseDate,
                     ]);
 
                     foreach ($lines as $line) {
                         OrderItem::factory()->create(array_merge($line, [
                             'order_id' => $order->id,
+                            'created_at' => $purchaseDate,
+                            'updated_at' => $purchaseDate,
                         ]));
                     }
+
+                    Payment::create([
+                        'order_id' => $order->id,
+                        'amount' => $total,
+                        'status' => $isPaid ? 'paid' : 'pending',
+                        'type' => fake()->randomElement(['stripe', 'cash']),
+                        'created_by' => $user->id,
+                        'updated_by' => $user->id,
+                        'created_at' => $purchaseDate,
+                        'updated_at' => $purchaseDate,
+                    ]);
                 }
             });
     }

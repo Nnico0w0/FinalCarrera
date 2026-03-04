@@ -16,13 +16,17 @@ class OrderFactory extends Factory
 
     public function definition(): array
     {
+        $purchaseDate = $this->faker->dateTimeBetween('-8 months', 'now');
+
         return [
             'total_price' => $this->faker->randomFloat(2, 250, 6500),
-            'status' => $this->faker->randomElement(['paid', 'pending', 'unpaid']),
+            'status' => $this->faker->randomElement(['paid', 'unpaid']),
             'session_id' => (string) Str::uuid(),
             'user_address_id' => UserAddress::factory(),
             'created_by' => null,
             'updated_by' => null,
+            'created_at' => $purchaseDate,
+            'updated_at' => $purchaseDate,
         ];
     }
 }

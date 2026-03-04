@@ -27,47 +27,27 @@
                         d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
 
-                <span class="self-center whitespace-nowrap text-2xl font-semibold text-white">B's shop</span>
+                <span class="self-center whitespace-nowrap text-2xl font-semibold text-white">TecnoSector</span>
                 </Link>
-                <form action="#" method="GET" class="hidden md:block md:pl-2">
-                    <label for="topbar-search" class="sr-only">Search</label>
-                    <div class="relative md:w-64 md:w-96">
-                        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                            <svg class="h-5 w-5 text-slate-400" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z">
-                                </path>
-                            </svg>
-                        </div>
-                        <input type="text" name="email" id="topbar-search"
-                            class="block w-full rounded-lg border border-white/15 bg-slate-900/80 p-2.5 pl-10 text-sm text-slate-100 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-indigo-400"
-                            placeholder="Search" />
-                    </div>
-                </form>
             </div>
             <div class="flex items-center lg:order-2">
-                <button type="button" data-drawer-toggle="drawer-navigation" aria-controls="drawer-navigation"
-                    class="mr-1 rounded-lg p-2 text-slate-300 hover:bg-white/10 hover:text-white focus:ring-4 focus:ring-white/20 md:hidden">
-                    <span class="sr-only">Toggle search</span>
-                    <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path clip-rule="evenodd" fill-rule="evenodd"
-                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z">
-                        </path>
-                    </svg>
-                </button>
                 <button type="button"
                     class="mx-3 flex rounded-full bg-slate-800 text-sm focus:ring-4 focus:ring-white/20 md:mr-0"
                     id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                     <span class="sr-only">Open user menu</span>
-                    <img class="w-8 h-8 rounded-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
-                        alt="user photo" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        class="h-8 w-8 rounded-full bg-white text-slate-900" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
                 </button>
                 <!-- Dropdown menu -->
                 <div class="z-50 my-4 hidden w-56 list-none divide-y divide-white/10 rounded-xl bg-slate-900 text-base text-slate-200 shadow-lg"
                     id="dropdown">
+                    <div class="px-4 py-3">
+                        <p class="text-sm font-semibold text-white">{{ authUser.name }}</p>
+                        <p class="truncate text-xs text-slate-400">{{ authUser.email }}</p>
+                    </div>
                     <ul class="py-1" aria-labelledby="dropdown">
                         <li>
                             <Link :href="route('logout')" method="post" as="button"
@@ -83,6 +63,12 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+
+const page = usePage()
+const authUser = page.props?.auth?.user ?? {
+    name: 'Admin',
+    email: 'Sin email',
+}
 
 </script>

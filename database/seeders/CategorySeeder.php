@@ -13,17 +13,6 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create([
-            'name' => 'Laptops',
-        ]);
-        Category::create([
-            'name' => 'Smartphones',
-        ]);
-        Category::create([
-            'name' => 'Smartwatches',
-        ]);
-        Category::create([
-            'name' => 'Tablets',
-        ]);
+        Category::factory(fake()->numberBetween(10, 20))->create();
     }
 }
