@@ -29,5 +29,8 @@ class DatabaseSeeder extends Seeder
                 'email' => 'test@example.com',
             ]);
         }
+
+        // Demo shoppers with real purchase history
+        $this->call(UserPurchaseSeeder::class);
     }
 }
