@@ -302,7 +302,7 @@
                                     clip-rule="evenodd"></path>
                             </svg>
                             <div class="text-sm text-gray-900 dark:text-white">
-                                Settings
+                                Configuración
                             </div>
                         </a>
                         <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
@@ -315,7 +315,7 @@
                                     clip-rule="evenodd"></path>
                             </svg>
                             <div class="text-sm text-gray-900 dark:text-white">
-                                Products
+                                Productos
                             </div>
                         </a>
                         <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
@@ -330,7 +330,7 @@
                                     clip-rule="evenodd"></path>
                             </svg>
                             <div class="text-sm text-gray-900 dark:text-white">
-                                Pricing
+                                Planes
                             </div>
                         </a>
                         <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
@@ -342,7 +342,7 @@
                                     clip-rule="evenodd"></path>
                             </svg>
                             <div class="text-sm text-gray-900 dark:text-white">
-                                Billing
+                                Facturación
                             </div>
                         </a>
                         <a href="#" class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
@@ -354,7 +354,7 @@
                                 </path>
                             </svg>
                             <div class="text-sm text-gray-900 dark:text-white">
-                                Logout
+                                Salir
                             </div>
                         </a>
                     </div>

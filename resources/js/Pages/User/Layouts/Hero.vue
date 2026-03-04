@@ -2,45 +2,33 @@
 import { Link } from '@inertiajs/vue3';
 </script>
 <template>
-     <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-            <Link :href="route('pricing')"
-                class="inline-flex justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-gray-700 bg-gray-100 rounded-full dark:bg-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700"
-                role="alert">
-                <span class="text-xs bg-primary-600 rounded-full text-white px-4 py-1.5 mr-3">New</span> <span
-                    class="text-sm font-medium">¡Ofertas especiales en equipos electrónicos - Hasta 50% de descuento!</span>
-                <svg class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"></path>
-                </svg>
-            </Link>
-            <h1
-                class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                Tu Destino para Equipos Electrónicos de Calidad</h1>
-            <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">En
-                TecnoSector nos especializamos en la venta de equipos electrónicos: computadoras, celulares, tablets y más. Encuentra la tecnología más reciente con los mejores precios y atención personalizada.</p>
-            <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-                <Link :href="route('pricing')"
-                    class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-900">
-                    Ver Precios
-                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </Link>
-                <Link :href="route('products.index')"
-                    class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                    <svg class="mr-2 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z">
-                        </path>
-                    </svg>
-                    Explorar Productos
-                </Link>
+     <section class="relative mx-auto flex max-w-6xl flex-col items-center gap-10 px-6 pb-20 pt-16 text-center text-white">
+        <div class="ts-card relative overflow-hidden px-8 py-12">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/15 to-sky-500/10"></div>
+            <div class="relative">
+                <div class="ts-pill inline-flex items-center gap-2 px-6 py-2 text-xs tracking-[0.35em]">
+                    LÍNEA PRO 2026
+                </div>
+                <h1 class="mt-6 text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
+                    Tecnología envolvente para crear, jugar y trabajar sin límites.
+                </h1>
+                <p class="mx-auto mt-6 max-w-3xl text-lg text-white/70">
+                    Curamos hardware y accesorios de alto desempeño para que construyas ecosistemas digitales impecables: laptops, wearables y móviles con garantía local y soporte boutique.
+                </p>
+                <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                    <Link :href="route('pricing')" class="ts-btn-primary">
+                        Ver planes y combos
+                    </Link>
+                    <Link :href="route('products.index')"
+                        class="inline-flex items-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/50">
+                        Explorar catálogo
+                        <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12l-3.75 3.75" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18" />
+                        </svg>
+                    </Link>
+                </div>
             </div>
         </div>
     </section>

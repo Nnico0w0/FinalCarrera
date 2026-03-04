@@ -107,155 +107,124 @@ function submit() {
 </script>
 <template>
     <UserLayouts>
-        <section class="text-gray-600 body-font relative">
-            <div class="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
-                <div class="lg:w-2/3 md:w-1/2  rounded-lg  sm:mr-10 p-10 ">
-
-                    <!-- lis tof cart -->
-
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">
-                                    <span class="sr-only">Image</span>
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Product
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Qty
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Price
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="product in products" :key="product.id"
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-32 p-4">
-                                    <img v-if="product.product_images.length > 0"
-                                        :src="`/${product.product_images[0].image}`" alt="Apple Watch">
-                                    <img v-else
-                                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png"
-                                        alt="Apple Watch">
-                                </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    {{ product.title }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center space-x-3">
-                                        <button @click.prevent="decrease(product)"
-                                            :disabled="!canDecrease(product)"
-                                            :class="[canDecrease(product) ? 'cursor-pointer text-purple-600' : 'cursor-not-allowed text-gray-300 dark:text-gray-500', 'inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700']"
-                                            type="button">
-                                            <span class="sr-only">Quantity button</span>
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 18 2">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2" d="M1 1h16" />
-                                            </svg>
-                                        </button>
-                                        <div>
-                                            <input type="number" id="first_product"
-                                                :value="getQuantity(product.id)"
-                                                @change="handleQuantityInput(product, $event)"
-                                                min="1"
-                                                :max="getStockLimit(product)"
-                                                class="quantity-input bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                placeholder="1" required>
-                                        </div>
-                                        <button @click.prevent="increase(product)"
-                                            :disabled="!canIncrease(product)"
-                                            :class="[canIncrease(product) ? 'text-purple-600 cursor-pointer' : 'text-gray-300 cursor-not-allowed dark:text-gray-500', 'inline-flex items-center justify-center h-6 w-6 p-1 text-sm font-medium bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700']"
-                                            type="button">
-                                            <span class="sr-only">Quantity button</span>
-                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                fill="none" viewBox="0 0 18 18">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                    stroke-width="2" d="M9 1v16M1 9h16" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    {{ formatCurrency(product.price) }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a @click="remove(product)"
-                                        class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- end -->
-                </div>
-                <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
-                    <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Summary</h2>
-                    <p class="leading-relaxed mb-5 text-gray-600">Total : {{ formattedTotal }} </p>
-
-                    <div v-if="userAddress">
-                        <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Shipping Address</h2>
-                        <p class="leading-relaxed mb-5 text-gray-600">{{ userAddress.address1 }} , {{ userAddress.city }}, {{
-                            userAddress.zipcode }}</p>
-                        <p class="leading-relaxed mb-5 text-gray-600">or you can add new below</p>
-
+        <section class="px-6 py-16">
+            <div class="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.6fr,0.9fr]">
+                <div class="ts-card overflow-hidden p-6">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.35em] text-white/40">Carrito</p>
+                            <h2 class="text-2xl font-semibold">Revisa tus equipos</h2>
+                        </div>
+                        <span class="rounded-full border border-white/10 px-4 py-1 text-sm text-white/70">
+                            {{ products.length }} productos
+                        </span>
                     </div>
+                    <div class="overflow-x-auto">
+                        <table class="mt-6 w-full text-left text-sm text-white/80">
+                            <thead class="text-xs uppercase tracking-[0.3em] text-white/50">
+                                <tr>
+                                    <th class="py-3">Producto</th>
+                                    <th class="py-3">Cantidad</th>
+                                    <th class="py-3">Precio</th>
+                                    <th class="py-3">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr v-for="product in products" :key="product.id" class="align-top">
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-4">
+                                            <img v-if="product.product_images.length > 0"
+                                                :src="`/${product.product_images[0].image}`" alt="product"
+                                                class="h-20 w-20 rounded-2xl object-cover" />
+                                            <img v-else
+                                                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png"
+                                                alt="placeholder" class="h-20 w-20 rounded-2xl object-cover" />
+                                            <div>
+                                                <p class="text-base font-semibold text-white">{{ product.title }}</p>
+                                                <p class="text-xs text-white/50">{{ product.brand ? product.brand.name : 'TecnoSector' }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-3">
+                                            <button @click.prevent="decrease(product)" :disabled="!canDecrease(product)"
+                                                :class="[canDecrease(product) ? 'text-white' : 'text-white/30 cursor-not-allowed', 'inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5']">
+                                                −
+                                            </button>
+                                            <input type="number" :value="getQuantity(product.id)"
+                                                @change="handleQuantityInput(product, $event)" min="1"
+                                                :max="getStockLimit(product)"
+                                                class="quantity-input w-16 rounded-xl border border-white/20 bg-white/5 px-3 py-1 text-center text-sm text-white"
+                                                required>
+                                            <button @click.prevent="increase(product)" :disabled="!canIncrease(product)"
+                                                :class="[canIncrease(product) ? 'text-white' : 'text-white/30 cursor-not-allowed', 'inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5']">
+                                                +
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 text-base font-semibold text-white">{{ formatCurrency(product.price) }}</td>
+                                    <td class="py-4">
+                                        <button @click="remove(product)" class="text-sm font-semibold text-rose-300 hover:text-rose-200">
+                                            Quitar
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                  <div v-else>
-                    <p class="leading-relaxed mb-5 text-gray-600"> Add shipping address to continue</p>
-                  </div>
+                <div class="ts-card p-6">
+                    <p class="text-xs uppercase tracking-[0.35em] text-white/40">Resumen</p>
+                    <h2 class="mt-2 text-3xl font-semibold text-white">{{ formattedTotal }}</h2>
+                    <p class="text-sm text-white/60">Incluye impuestos y envío local</p>
 
+                    <div v-if="userAddress" class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/80">
+                        <p class="text-xs uppercase tracking-[0.35em] text-white/40">Dirección principal</p>
+                        <p class="mt-2 font-semibold">{{ userAddress.address1 }}</p>
+                        <p>{{ userAddress.city }} · {{ userAddress.zipcode }}</p>
+                        <p class="text-white/60">Podés actualizarla aquí abajo.</p>
+                    </div>
+                    <p v-else class="mt-6 text-sm text-white/70">Añadí una dirección para habilitar la compra.</p>
 
-
-                    <form @submit.prevent="submit">
-                        <div class="relative mb-4">
-                            <label for="name" class="leading-7 text-sm text-gray-600">Address 1</label>
-                            <input type="text" id="name" name="address1" v-model="form.address1"
-                                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <form @submit.prevent="submit" class="mt-6 space-y-4">
+                        <div>
+                            <label class="text-xs uppercase tracking-[0.35em] text-white/40">Dirección</label>
+                            <input type="text" name="address1" v-model="form.address1" class="ts-input mt-2">
                         </div>
-                        <div class="relative mb-4">
-                            <label for="email" class="leading-7 text-sm text-gray-600">City</label>
-                            <input type="text" id="email" name="city" v-model="form.city"
-                                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <div>
+                            <label class="text-xs uppercase tracking-[0.35em] text-white/40">Ciudad</label>
+                            <input type="text" name="city" v-model="form.city" class="ts-input mt-2">
                         </div>
-                        <div class="relative mb-4">
-                            <label for="email" class="leading-7 text-sm text-gray-600">State</label>
-                            <input type="text" id="email" name="state" v-model="form.state"
-                                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div>
+                                <label class="text-xs uppercase tracking-[0.35em] text-white/40">Provincia / Estado</label>
+                                <input type="text" name="state" v-model="form.state" class="ts-input mt-2">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-[0.35em] text-white/40">Código postal</label>
+                                <input type="text" name="zipcode" v-model="form.zipcode" class="ts-input mt-2">
+                            </div>
                         </div>
-                        <div class="relative mb-4">
-                            <label for="email" class="leading-7 text-sm text-gray-600">Zipcode</label>
-                            <input type="text" id="email" name="zipcode" v-model="form.zipcode"
-                                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                        </div>
-                        <div class="relative mb-4">
-                            <label for="email" class="leading-7 text-sm text-gray-600">Country Code</label>
-                            <input type="text" id="email" name="countrycode" v-model="form.country_code"
-                                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                        </div>
-                        <div class="relative mb-4">
-                            <label for="email" class="leading-7 text-sm text-gray-600">Address type</label>
-                            <input type="text" id="email" name="type" v-model="form.type"
-                                class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div>
+                                <label class="text-xs uppercase tracking-[0.35em] text-white/40">País</label>
+                                <input type="text" name="countrycode" v-model="form.country_code" class="ts-input mt-2">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-[0.35em] text-white/40">Tipo de dirección</label>
+                                <input type="text" name="type" v-model="form.type" class="ts-input mt-2">
+                            </div>
                         </div>
 
-
-
-                        <button v-if="formFilled || userAddress" type="submit"
-                            class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Checkout</button>
-
+                        <button v-if="formFilled || userAddress" type="submit" class="ts-btn-primary w-full text-center">
+                            Confirmar compra
+                        </button>
                         <button v-else type="submit"
-                            class="text-white bg-gray-500 border-0 py-2 px-6 focus:outline-none hover:bg-gray-600 rounded text-lg">Add
-                            Address to continue</button>
-
+                            class="w-full rounded-full border border-white/20 px-4 py-3 text-sm font-semibold text-white/50">
+                            Añadí tu dirección
+                        </button>
                     </form>
-
-                    <p class="text-xs text-gray-500 mt-3">Continue Shopping </p>
                 </div>
             </div>
         </section>

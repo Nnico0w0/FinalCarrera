@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import UserLayouts from './Layouts/UserLayouts.vue'
+import AdminCrudPanel from './Components/AdminCrudPanel.vue'
 
 const props = defineProps({
     orders: {
@@ -27,6 +28,20 @@ const page = usePage()
 const ordersList = computed(() => props.orders ?? [])
 const statsData = computed(() => props.stats ?? {})
 const recentProductsList = computed(() => props.recentProducts ?? [])
+
+const isAdmin = computed(() => {
+    const user = page.props?.auth?.user
+    if (!user) {
+        return false
+    }
+    if (typeof user.isAdmin !== 'undefined') {
+        return Boolean(user.isAdmin)
+    }
+    if (typeof user.is_admin !== 'undefined') {
+        return Boolean(user.is_admin)
+    }
+    return user.role === 'admin'
+})
 
 const profileCard = computed(() => {
     const fallback = page.props?.auth?.user ?? {}
@@ -246,6 +261,8 @@ const lastPurchaseLabel = computed(() => formatDate(statsData.value?.last_order_
                     </section>
                 </div>
             </div>
+
+            <AdminCrudPanel v-if="isAdmin" />
         </section>
     </UserLayouts>
 </template>

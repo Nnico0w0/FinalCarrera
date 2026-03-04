@@ -1,3 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	:root {
+		--ts-bg: #030617;
+		--ts-bg-secondary: #0a0f2a;
+		--ts-card: rgba(15, 23, 42, 0.85);
+		--ts-card-border: rgba(148, 163, 184, 0.25);
+		--ts-highlight: #7c3aed;
+		--ts-highlight-soft: rgba(124, 58, 237, 0.15);
+		--ts-light: #f8fafc;
+	}
+
+	body {
+		font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+		background-color: var(--ts-bg);
+		color: var(--ts-light);
+		min-height: 100vh;
+		background-image:
+			radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.25), transparent 45%),
+			radial-gradient(circle at 80% 0%, rgba(236, 72, 153, 0.15), transparent 55%);
+		background-attachment: fixed;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+@layer components {
+	.ts-shell {
+		min-height: 100vh;
+		background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.15), transparent 50%),
+			radial-gradient(circle at 80% 0%, rgba(236, 72, 153, 0.2), transparent 55%),
+			radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.2), transparent 60%),
+			var(--ts-bg-secondary);
+		color: var(--ts-light);
+		position: relative;
+	}
+
+	.ts-card {
+		background: var(--ts-card);
+		border: 1px solid var(--ts-card-border);
+		border-radius: 28px;
+		box-shadow: 0 25px 60px rgba(15, 23, 42, 0.55);
+	}
+
+	.ts-pill {
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		background: rgba(255, 255, 255, 0.06);
+		color: var(--ts-light);
+		font-size: 0.85rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+	}
+
+	.ts-btn-primary {
+		background: linear-gradient(120deg, #6366f1, #a855f7, #ec4899);
+		color: #fff;
+		border-radius: 999px;
+		padding: 0.85rem 1.8rem;
+		font-weight: 600;
+		transition: transform 200ms ease, box-shadow 200ms ease;
+		box-shadow: 0 15px 35px rgba(99, 102, 241, 0.35);
+	}
+
+	.ts-btn-primary:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 20px 45px rgba(236, 72, 153, 0.35);
+	}
+
+	.ts-input {
+		width: 100%;
+		padding: 0.9rem 1.1rem;
+		border-radius: 18px;
+		background: rgba(15, 23, 42, 0.55);
+		border: 1px solid rgba(148, 163, 184, 0.4);
+		color: #e2e8f0;
+		outline: none;
+		transition: border 150ms ease, box-shadow 150ms ease;
+	}
+
+	.ts-input:focus {
+		border-color: rgba(99, 102, 241, 0.9);
+		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+	}
+}
