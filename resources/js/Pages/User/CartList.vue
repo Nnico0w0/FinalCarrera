@@ -92,9 +92,6 @@ function submit() {
     router.visit(route('checkout.store'), {
         method: 'post',
         data: {
-            carts: page.props.cart.data.items,
-            products: page.props.cart.data.products,
-            total: cartTotal.value,
             address: form
         }
     })
