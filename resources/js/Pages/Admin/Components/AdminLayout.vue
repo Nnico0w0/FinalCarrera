@@ -1,12 +1,12 @@
 <template>
-    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+    <div class="ts-shell min-h-screen antialiased">
         <!-- navbar start -->
         <Navbar />
         <!-- end -->
         <!-- Sidebar -->
         <Sidebar />
         <!-- end -->
-        <main class="p-4 md:ml-64 h-auto pt-20">
+        <main class="min-h-screen p-4 pt-20 md:ml-64">
 
             <slot />
         </main>

@@ -232,7 +232,7 @@ const togglePublish = async (product, status) => {
 }
 </script>
 <template>
-    <section class="  p-3 sm:p-5">
+    <section class="px-2 py-6 text-slate-100">
         <!-- dialog for adding product or editing product -->
         <el-dialog v-model="dialogVisible" :title="editMode ? 'Edit product' : 'Add Product'" width="30%"
             :before-close="handleClose">
@@ -338,16 +338,16 @@ const togglePublish = async (product, status) => {
         </el-dialog>
 
         <!-- end -->
-        <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <div class="mx-auto max-w-screen-xl px-2 lg:px-8">
             <!-- Start coding here -->
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="ts-card relative overflow-hidden">
                 <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                     <div class="w-full md:w-1/2">
                         <form class="flex items-center">
                             <label for="simple-search" class="sr-only">Search</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    <svg aria-hidden="true" class="h-5 w-5 text-slate-400"
                                         fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd"
                                             d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -355,7 +355,7 @@ const togglePublish = async (product, status) => {
                                     </svg>
                                 </div>
                                 <input type="text" id="simple-search"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    class="block w-full rounded-lg border border-white/15 bg-slate-900/70 p-2 pl-10 text-sm text-slate-100 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-indigo-400"
                                     placeholder="Search" required="">
                             </div>
                         </form>
@@ -363,7 +363,7 @@ const togglePublish = async (product, status) => {
                     <div
                         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <button type="button" @click="openAddModal"
-                            class="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            class="ts-btn-primary flex items-center justify-center px-4 py-2 text-sm font-medium">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clip-rule="evenodd" fill-rule="evenodd"
@@ -373,7 +373,7 @@ const togglePublish = async (product, status) => {
                         </button>
                         <div class="flex items-center space-x-3 w-full md:w-auto">
                             <button id="actionsDropdownButton" data-dropdown-toggle="actionsDropdown"
-                                class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                class="flex w-full items-center justify-center rounded-lg border border-white/20 bg-slate-900/70 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10 focus:z-10 focus:outline-none focus:ring-4 focus:ring-white/20 md:w-auto"
                                 type="button">
                                 <svg class="-ml-1 mr-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -383,8 +383,8 @@ const togglePublish = async (product, status) => {
                                 Actions
                             </button>
                             <div id="actionsDropdown"
-                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                class="z-10 hidden w-44 divide-y divide-white/10 rounded bg-slate-900 text-slate-200 shadow-lg">
+                                <ul class="py-1 text-sm"
                                     aria-labelledby="actionsDropdownButton">
                                     <li>
                                         <a href="#"
@@ -394,12 +394,12 @@ const togglePublish = async (product, status) => {
                                 </ul>
                                 <div class="py-1">
                                     <a href="#"
-                                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete
+                                        class="block py-2 px-4 text-sm hover:bg-white/10">Delete
                                         all</a>
                                 </div>
                             </div>
                             <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown"
-                                class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                class="flex w-full items-center justify-center rounded-lg border border-white/20 bg-slate-900/70 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-white/10 focus:z-10 focus:outline-none focus:ring-4 focus:ring-white/20 md:w-auto"
                                 type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                                     class="h-4 w-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">
@@ -415,42 +415,42 @@ const togglePublish = async (product, status) => {
                                 </svg>
                             </button>
                             <div id="filterDropdown"
-                                class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                                <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
+                                class="z-10 hidden w-48 rounded-lg bg-slate-900 p-3 shadow-lg">
+                                <h6 class="mb-3 text-sm font-medium text-slate-100">Choose brand</h6>
                                 <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
                                     <li class="flex items-center">
                                         <input id="apple" type="checkbox" value=""
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         <label for="apple"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Apple
+                                            class="ml-2 text-sm font-medium text-slate-100">Apple
                                             (56)</label>
                                     </li>
                                     <li class="flex items-center">
                                         <input id="fitbit" type="checkbox" value=""
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         <label for="fitbit"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Microsoft
+                                            class="ml-2 text-sm font-medium text-slate-100">Microsoft
                                             (16)</label>
                                     </li>
                                     <li class="flex items-center">
                                         <input id="razor" type="checkbox" value=""
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         <label for="razor"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Razor
+                                            class="ml-2 text-sm font-medium text-slate-100">Razor
                                             (49)</label>
                                     </li>
                                     <li class="flex items-center">
                                         <input id="nikon" type="checkbox" value=""
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         <label for="nikon"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nikon
+                                            class="ml-2 text-sm font-medium text-slate-100">Nikon
                                             (12)</label>
                                     </li>
                                     <li class="flex items-center">
                                         <input id="benq" type="checkbox" value=""
                                             class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                         <label for="benq"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">BenQ
+                                            class="ml-2 text-sm font-medium text-slate-100">BenQ
                                             (74)</label>
                                     </li>
                                 </ul>
@@ -459,8 +459,8 @@ const togglePublish = async (product, status) => {
                     </div>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-white/5 text-xs uppercase text-slate-300">
                             <tr>
                                 <th scope="col" class="px-4 py-3">Product name</th>
                                 <th scope="col" class="px-4 py-3">Category</th>
@@ -476,9 +476,9 @@ const togglePublish = async (product, status) => {
                         </thead>
                         <tbody>
                             <tr v-for="(product, index) in products" :key="product.id"
-                                class="border-b dark:border-gray-700">
+                                class="border-b border-white/10">
                                 <th scope="row"
-                                    class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    class="whitespace-nowrap px-4 py-3 font-medium text-slate-100">
                                     {{ product.title }}</th>
                                 <td class="px-4 py-3">{{ product.category.name }}</td>
                                 <td class="px-4 py-3">{{ product.brand.name }}</td>
@@ -537,11 +537,11 @@ const togglePublish = async (product, status) => {
                 </div>
                 <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
                     aria-label="Table navigation">
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span class="text-sm font-normal text-slate-400">
                         Showing
-                        <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
+                        <span class="font-semibold text-slate-100">1-10</span>
                         of
-                        <span class="font-semibold text-gray-900 dark:text-white">1000</span>
+                        <span class="font-semibold text-slate-100">1000</span>
                     </span>
                     <ul class="inline-flex items-stretch -space-x-px">
                         <li>
