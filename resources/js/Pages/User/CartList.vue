@@ -9,11 +9,38 @@ defineProps({
     userAddress: Object
 })
 
-const carts = computed(() => usePage().props.cart.data.items)
-const products = computed(() => usePage().props.cart.data.products)
+const page = usePage()
+const cartItems = computed(() => page.props.cart?.data?.items ?? [])
+const products = computed(() => page.props.cart?.data?.products ?? [])
 
-const total = computed(() => usePage().props.cart.data.total)
-const itemId = (id) => carts.value.findIndex((item) => item.product_id === id);
+const cartIndex = computed(() => {
+    const source = cartItems.value
+    if (Array.isArray(source)) {
+        return source.reduce((acc, item) => {
+            acc[item.product_id] = item
+            return acc
+        }, {})
+    }
+    return source ?? {}
+})
+
+const getQuantity = (productId) => cartIndex.value?.[productId]?.quantity ?? 1
+const getStockLimit = (product) => {
+    const stock = Number(product?.quantity)
+    if (!Number.isFinite(stock) || stock <= 0) {
+        return 1
+    }
+    return stock
+}
+
+const cartTotal = computed(() => products.value.reduce((carry, product) => {
+    const price = Number(product.price) || 0
+    const quantity = getQuantity(product.id)
+    return carry + price * quantity
+}, 0))
+
+const formatCurrency = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value || 0)
+const formattedTotal = computed(() => formatCurrency(cartTotal.value))
 
 const form = reactive({
     address1: null,
@@ -35,10 +62,26 @@ const formFilled = computed(()=>{
 
 
 
-const update = (product, quantity) =>
+const updateQuantity = (product, quantity) => {
+    const max = getStockLimit(product)
+    const safeQuantity = Math.max(1, Math.min(Number(quantity) || 1, max))
+    if (safeQuantity === getQuantity(product.id)) {
+        return
+    }
     router.patch(route('cart.update', product), {
-        quantity,
-    });
+        quantity: safeQuantity,
+        preserveScroll: true,
+    })
+}
+
+const decrease = (product) => updateQuantity(product, getQuantity(product.id) - 1)
+const increase = (product) => updateQuantity(product, getQuantity(product.id) + 1)
+const handleQuantityInput = (product, event) => {
+    const value = Number(event.target.value)
+    updateQuantity(product, Number.isNaN(value) ? 1 : value)
+}
+const canDecrease = (product) => getQuantity(product.id) > 1
+const canIncrease = (product) => getQuantity(product.id) < getStockLimit(product)
 //remove form cart 
 const remove = (product) => router.delete(route('cart.delete', product));
 
@@ -49,9 +92,9 @@ function submit() {
     router.visit(route('checkout.store'), {
         method: 'post',
         data: {
-            carts: usePage().props.cart.data.items,
-            products: usePage().props.cart.data.products,
-            total: usePage().props.cart.data.total,
+            carts: page.props.cart.data.items,
+            products: page.props.cart.data.products,
+            total: cartTotal.value,
             address: form
         }
     })
@@ -105,9 +148,9 @@ function submit() {
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center space-x-3">
-                                        <button @click.prevent="update(product, carts[itemId(product.id)].quantity - 1)"
-                                            :disabled="carts[itemId(product.id)].quantity <= 1"
-                                            :class="[carts[itemId(product.id)].quantity > 1 ? 'cursor-pointer text-purple-600' : 'cursor-not-allowed text-gray-300 dark:text-gray-500', 'inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700']"
+                                        <button @click.prevent="decrease(product)"
+                                            :disabled="!canDecrease(product)"
+                                            :class="[canDecrease(product) ? 'cursor-pointer text-purple-600' : 'cursor-not-allowed text-gray-300 dark:text-gray-500', 'inline-flex items-center justify-center p-1 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700']"
                                             type="button">
                                             <span class="sr-only">Quantity button</span>
                                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -118,12 +161,16 @@ function submit() {
                                         </button>
                                         <div>
                                             <input type="number" id="first_product"
-                                                v-model="carts[itemId(product.id)].quantity"
-                                                class="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                :value="getQuantity(product.id)"
+                                                @change="handleQuantityInput(product, $event)"
+                                                min="1"
+                                                :max="getStockLimit(product)"
+                                                class="quantity-input bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 placeholder="1" required>
                                         </div>
-                                        <button @click.prevent="update(product, carts[itemId(product.id)].quantity + 1)"
-                                            class="inline-flex items-center justify-center h-6 w-6 p-1 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                                        <button @click.prevent="increase(product)"
+                                            :disabled="!canIncrease(product)"
+                                            :class="[canIncrease(product) ? 'text-purple-600 cursor-pointer' : 'text-gray-300 cursor-not-allowed dark:text-gray-500', 'inline-flex items-center justify-center h-6 w-6 p-1 text-sm font-medium bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700']"
                                             type="button">
                                             <span class="sr-only">Quantity button</span>
                                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +182,7 @@ function submit() {
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    ${{ product.price }}
+                                    {{ formatCurrency(product.price) }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <a @click="remove(product)"
@@ -149,7 +196,7 @@ function submit() {
                 </div>
                 <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
                     <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Summary</h2>
-                    <p class="leading-relaxed mb-5 text-gray-600">Total : $ {{ total }} </p>
+                    <p class="leading-relaxed mb-5 text-gray-600">Total : {{ formattedTotal }} </p>
 
                     <div v-if="userAddress">
                         <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Shipping Address</h2>
@@ -212,4 +259,17 @@ function submit() {
                 </div>
             </div>
         </section>
-    </UserLayouts></template>
+    </UserLayouts>
+</template>
+
+<style scoped>
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-input[type=number] {
+    -moz-appearance: textfield;
+}
+</style>

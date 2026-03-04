@@ -85,7 +85,9 @@ class CartController extends Controller
     }
     public function update(Request $request, Product $product)
     {
-        $quantity = $request->integer('quantity');
+        $requestedQuantity = max(1, $request->integer('quantity'));
+        $availableStock = max(1, (int) $product->quantity);
+        $quantity = min($requestedQuantity, $availableStock);
         $user = $request->user();
         if ($user) {
             CartItem::where(['user_id' => $user->id, 'product_id' => $product->id])->update(['quantity' => $quantity]);

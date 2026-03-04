@@ -14,16 +14,11 @@ onMounted(() => {
 
 </script>
 <template>
-    <!-- header -->
-    <Header></Header>
-    <!-- end -->
-    <!-- main content -->
-    
-    <slot />
-    <!-- end -->
-    <!-- footer -->
-
-    <Footer></Footer>
-
-    <!-- end -->
+    <div class="min-h-screen flex flex-col bg-white dark:bg-gray-900">
+        <Header />
+        <main class="flex-1">
+            <slot />
+        </main>
+        <Footer />
+    </div>
 </template>
