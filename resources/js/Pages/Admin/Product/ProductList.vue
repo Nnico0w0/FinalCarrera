@@ -210,6 +210,26 @@ const deleteProduct = (product, index) => {
     })
 
 }
+
+const togglePublish = async (product, status) => {
+    try {
+        await router.patch(`/admin/products/${product.id}/publish`, { published: status }, {
+            preserveScroll: true,
+            onSuccess: (page) => {
+                Swal.fire({
+                    toast: true,
+                    icon: 'success',
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    title: page.props.flash.success,
+                    timer: 2000
+                })
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 </script>
 <template>
     <section class="  p-3 sm:p-5">
@@ -466,18 +486,20 @@ const deleteProduct = (product, index) => {
                                 <td class="px-4 py-3">${{ product.price }}</td>
 
                                 <td class="px-4 py-3">
-                                    <span v-if="product.inStock == 0"
-                                        class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">inStock</span>
+                                    <span v-if="product.quantity > 0"
+                                        class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">In
+                                        stock</span>
                                     <span v-else
                                         class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Out
-                                        of Stock</span>
+                                        of stock</span>
 
                                 </td>
                                 <td class="px-4 py-3">
                                     <button v-if="product.published == 0" type="button"
-                                        class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Published</button>
-                                    <button v-else type="button"
-                                        class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">UnPublished</button>
+                                        @click="togglePublish(product, true)"
+                                        class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publish</button>
+                                    <button v-else type="button" @click="togglePublish(product, false)"
+                                        class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Unpublish</button>
 
                                 </td>
 

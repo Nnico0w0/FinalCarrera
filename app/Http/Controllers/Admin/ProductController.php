@@ -41,6 +41,8 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->published = $request->boolean('published', false);
+        $product->inStock = $product->quantity > 0;
         $product->save();
 
         //check if product has images upload 
@@ -75,6 +77,7 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
+        $product->inStock = $product->quantity > 0;
         // Check if product images were uploaded
         if ($request->hasFile('product_images')) {
             $productImages = $request->file('product_images');
@@ -107,5 +110,23 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id)->delete();
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully.');
+    }
+
+    public function togglePublish(Request $request, Product $product)
+    {
+        $data = $request->validate([
+            'published' => ['required', 'boolean'],
+        ]);
+
+        $product->update([
+            'published' => $data['published'],
+            'inStock' => $product->quantity > 0,
+        ]);
+
+        $message = $data['published']
+            ? 'Product published. It is now visible in the catalog.'
+            : 'Product unpublished. It will no longer appear in the catalog.';
+
+        return redirect()->route('admin.products.index')->with('success', $message);
     }
 }

@@ -71,6 +71,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/products/update/{id}',[ProductController::class,'update'])->name('admin.products.update');
     Route::delete('/products/image/{id}',[ProductController::class,'deleteImage'])->name('admin.products.image.delete');
     Route::delete('/products/destory/{id}',[ProductController::class,'destory'])->name('admin.products.destory');
+    Route::patch('/products/{product}/publish',[ProductController::class,'togglePublish'])->name('admin.products.publish');
     
 });
 

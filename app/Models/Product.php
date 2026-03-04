@@ -31,6 +31,11 @@ class Product extends Model
         'deleted_by',
     ];
 
+    protected $casts = [
+        'published' => 'boolean',
+        'inStock' => 'boolean',
+    ];
+
 
     public function getSlugOptions(): SlugOptions
     {
@@ -56,6 +61,11 @@ class Product extends Model
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function getInStockAttribute($value): bool
+    {
+        return (int) $this->quantity > 0;
     }
 
 
