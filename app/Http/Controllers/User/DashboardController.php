@@ -14,6 +14,10 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
+        if ($user && (int) ($user->isAdmin ?? 0) === 1) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $orders = Order::with('order_items.product.brand', 'order_items.product.category')
             ->where('created_by', $user->id)
             ->latest()
