@@ -1,10 +1,51 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue'
-const canLogin = usePage().props.canLogin;
-const canRegister = usePage().props.canRegister;
-const auth = usePage().props.auth;
-const cart = computed(() => usePage().props.cart);
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+const page = usePage();
+const canLogin = page.props.canLogin;
+const canRegister = page.props.canRegister;
+const auth = page.props.auth;
+const cart = computed(() => page.props.cart);
+
+const showUserMenu = ref(false)
+const menuRef = ref(null)
+const buttonRef = ref(null)
+
+const toggleMenu = () => {
+    showUserMenu.value = !showUserMenu.value
+}
+
+const closeMenu = () => {
+    showUserMenu.value = false
+}
+
+const handleClickOutside = (event) => {
+    if (!showUserMenu.value) {
+        return
+    }
+    const menuEl = menuRef.value
+    const buttonEl = buttonRef.value
+    if (menuEl?.contains(event.target) || buttonEl?.contains(event.target)) {
+        return
+    }
+    closeMenu()
+}
+
+const handleKeydown = (event) => {
+    if (event.key === 'Escape' && showUserMenu.value) {
+        closeMenu()
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('click', handleClickOutside)
+    document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('click', handleClickOutside)
+    document.removeEventListener('keydown', handleKeydown)
+})
 </script>
 <template>
     <header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
@@ -50,9 +91,12 @@ const cart = computed(() => usePage().props.cart);
                 </Link>
 
                 <button v-if="auth.user" type="button"
+                    ref="buttonRef"
+                    @click="toggleMenu"
                     class="flex items-center justify-center rounded-full border border-white/15 bg-white/10 p-1 text-white focus:ring-2 focus:ring-white/40"
-                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
-                    data-dropdown-placement="bottom">
+                    :aria-expanded="showUserMenu"
+                    aria-haspopup="true"
+                >
                     <span class="sr-only">Open user menu</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         class="h-9 w-9 rounded-full bg-white text-slate-900" stroke="currentColor">
@@ -74,8 +118,10 @@ const cart = computed(() => usePage().props.cart);
         </nav>
 
         <div v-if="auth.user"
-            class="ts-card absolute right-6 mt-2 hidden min-w-[220px] divide-y divide-white/5 bg-slate-950/95 text-white"
-            id="user-dropdown">
+            ref="menuRef"
+            class="ts-card absolute right-6 mt-2 min-w-[220px] divide-y divide-white/5 bg-slate-950/95 text-white transition duration-150"
+            :class="showUserMenu ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'"
+        >
             <div class="px-4 py-3">
                 <p class="text-sm font-semibold">{{ auth.user.name }}</p>
                 <p class="text-xs text-white/60">{{ auth.user.email }}</p>
