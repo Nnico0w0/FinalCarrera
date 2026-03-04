@@ -177,9 +177,6 @@
                 </section>
             </div>
 
-            <section>
-                <AdminCrudPanel />
-            </section>
         </section>
     </AdminLayout>
 </template>
@@ -187,7 +184,6 @@
 <script setup>
 import { computed } from 'vue'
 import AdminLayout from './Components/AdminLayout.vue'
-import AdminCrudPanel from '../User/Components/AdminCrudPanel.vue'
 
 const props = defineProps({
     stats: {

@@ -61,19 +61,19 @@ import { Link } from '@inertiajs/vue3';
                                 class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium text-slate-200 transition duration-75 hover:bg-white/10">Product</Link>
                         </li>
                         <li>
-                            <a href="#"
-                                class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium text-slate-200 transition duration-75 hover:bg-white/10">Brand</a>
+                            <Link :href="route('admin.brands.index')"
+                                class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium text-slate-200 transition duration-75 hover:bg-white/10">Brand</Link>
                         </li>
                         <li>
-                            <a href="#"
-                                class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium text-slate-200 transition duration-75 hover:bg-white/10">Category</a>
+                            <Link :href="route('admin.categories.index')"
+                                class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-medium text-slate-200 transition duration-75 hover:bg-white/10">Category</Link>
                         </li>
                     </ul>
                 </li>
             </ul>
             <ul class="mt-5 space-y-2 border-t border-white/10 pt-5">
                 <li>
-                    <a href="#"
+                    <Link :href="route('admin.sale-report')"
                         class="group flex items-center rounded-lg p-2 text-base font-medium text-slate-100 transition duration-75 hover:bg-white/10">
                         <svg aria-hidden="true"
                             class="h-6 w-6 flex-shrink-0 text-slate-400 transition duration-75 group-hover:text-white"
@@ -84,7 +84,7 @@ import { Link } from '@inertiajs/vue3';
                                 clip-rule="evenodd"></path>
                         </svg>
                         <span class="ml-3">Sale Report</span>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>

@@ -19,4 +19,11 @@ class AdminController extends Controller
 
         return Inertia::render('Admin/Dashboard', $report);
     }
+
+    public function saleReport()
+    {
+        $report = $this->metrics->buildSummary();
+
+        return Inertia::render('Admin/SaleReport', $report);
+    }
 }
